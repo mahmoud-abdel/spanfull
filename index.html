@@ -1,0 +1,1254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Spanfull | Exercise Prescription Infrastructure for Clinical Care</title>
+    <link rel="icon" type="image/png" href="assets/logo_icon.png">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,500;0,8..60,600;0,8..60,700;1,8..60,400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* Brand Colors */
+            --navy: #111827;
+            --navy-light: #1f2937;
+            --slate: #4b5563;
+            
+            /* Accents - Both now point to your Logo Blue */
+            --coral: #136aec;
+            --coral-light: #3b82f6;
+            --sage: #136aec;
+            --sage-light: #60a5fa;
+            --amber: #f59e0b; /* Kept for "Warning" or "Special" highlights */
+
+            /* Backgrounds */
+            --cream: #f9fafb;
+            --cream-dark: #f1f5f9;
+            --white: #ffffff;
+
+            /* Text */
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+        }
+<!--        :root {-->
+<!--            --navy: #1a2744;-->
+<!--            --navy-light: #2a3a5c;-->
+<!--            --slate: #3d4f6f;-->
+<!--            --coral: #e07c5c;-->
+<!--            --coral-light: #f4a991;-->
+<!--            --amber: #d4a754;-->
+<!--            --cream: #faf8f5;-->
+<!--            --cream-dark: #f0ebe3;-->
+<!--            --sage: #7a9e8e;-->
+<!--            --sage-light: #a8c5b5;-->
+<!--            --text-primary: #1a2744;-->
+<!--            --text-secondary: #5a6a7a;-->
+<!--            --white: #ffffff;-->
+<!--        }-->
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'DM Sans', sans-serif;
+            color: var(--text-primary);
+            background: var(--cream);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Source Serif 4', serif;
+            font-weight: 600;
+            line-height: 1.2;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 24px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--coral);
+            margin-bottom: 12px;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            background: rgba(250, 248, 245, 0.92);
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(26, 39, 68, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        nav.scrolled {
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.06);
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4px 24px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--navy);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo img {
+            height: 72px;
+            width: auto;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            list-style: none;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--navy);
+        }
+
+        .nav-cta {
+            background: var(--navy);
+            color: var(--white) !important;
+            padding: 10px 20px;
+            border-radius: 8px;
+            transition: all 0.2s ease !important;
+        }
+
+        .nav-cta:hover {
+            background: var(--navy-light);
+            transform: translateY(-1px);
+        }
+
+        .mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: var(--navy);
+            cursor: pointer;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            position: relative;
+            padding: 120px 0 80px;
+            background: var(--cream);
+            overflow: hidden;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            right: -20%;
+            width: 80%;
+            height: 150%;
+            background: radial-gradient(ellipse at center, rgba(224, 124, 92, 0.08) 0%, transparent 60%);
+            pointer-events: none;
+        }
+
+        .hero-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            align-items: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-text h1 {
+            font-size: clamp(2.5rem, 5vw, 3.5rem);
+            color: var(--navy);
+            margin-bottom: 24px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease forwards;
+        }
+
+        .hero-text h1 span {
+            color: var(--coral);
+        }
+
+        .hero-text p {
+            font-size: 1.15rem;
+            color: var(--text-secondary);
+            margin-bottom: 32px;
+            max-width: 520px;
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeUp 0.8s ease 0.15s forwards;
+        }
+
+        .hero-badges {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.25s forwards;
+        }
+
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--white);
+            border: 1px solid rgba(26, 39, 68, 0.1);
+            padding: 8px 14px;
+            border-radius: 100px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: var(--slate);
+        }
+
+        .badge i {
+            color: var(--sage);
+            font-size: 0.75rem;
+        }
+
+        .hero-ctas {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.35s forwards;
+        }
+
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--navy);
+            color: var(--white);
+            padding: 16px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn-primary:hover {
+            background: var(--navy-light);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(26, 39, 68, 0.2);
+        }
+
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: transparent;
+            color: var(--navy);
+            padding: 16px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+            border: 2px solid rgba(26, 39, 68, 0.15);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--navy);
+            background: var(--white);
+        }
+
+        /* Hero Visual - Portal Dashboard */
+        .hero-visual {
+            position: relative;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.4s forwards;
+        }
+
+        .portal-card {
+            background: var(--white);
+            border-radius: 16px;
+            box-shadow: 0 25px 80px rgba(26, 39, 68, 0.12);
+            overflow: hidden;
+            border: 1px solid rgba(26, 39, 68, 0.08);
+        }
+
+        .portal-header {
+            background: var(--navy);
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .portal-header-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .portal-logo {
+            width: 28px;
+            height: 28px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .portal-logo i {
+            color: var(--white);
+            font-size: 0.85rem;
+        }
+
+        .portal-title {
+            color: var(--white);
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .portal-user {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: rgba(255,255,255,0.7);
+            font-size: 0.8rem;
+        }
+
+        .portal-user-avatar {
+            width: 28px;
+            height: 28px;
+            background: var(--coral);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+
+        .portal-nav {
+            background: var(--cream);
+            padding: 12px 24px;
+            display: flex;
+            gap: 24px;
+            border-bottom: 1px solid rgba(26, 39, 68, 0.08);
+        }
+
+        .portal-nav-item {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            padding: 6px 0;
+            border-bottom: 2px solid transparent;
+            cursor: default;
+        }
+
+        .portal-nav-item.active {
+            color: var(--navy);
+            font-weight: 600;
+            border-bottom-color: var(--coral);
+        }
+
+        .portal-content {
+            padding: 24px;
+        }
+
+        .portal-section-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+
+        .portal-section-title {
+            font-family: 'Source Serif 4', serif;
+            font-size: 1rem;
+            font-weight: 600;
+            color: var(--navy);
+        }
+
+        .portal-filter {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            background: var(--cream);
+            padding: 6px 12px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .assessment-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .assessment-row {
+            display: grid;
+            grid-template-columns: 1fr auto auto;
+            gap: 16px;
+            align-items: center;
+            padding: 14px 16px;
+            background: var(--cream);
+            border-radius: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .assessment-row:hover {
+            background: var(--cream-dark);
+        }
+
+        .assessment-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .assessment-avatar {
+            width: 36px;
+            height: 36px;
+            background: var(--sage-light);
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+
+        .assessment-avatar.alt {
+            background: var(--coral-light);
+        }
+
+        .assessment-avatar.alt2 {
+            background: var(--amber);
+        }
+
+        .assessment-name {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--navy);
+        }
+
+        .assessment-date {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+        }
+
+        .assessment-status {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 100px;
+            background: rgba(122, 158, 142, 0.15);
+            color: var(--sage);
+        }
+
+        .assessment-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .action-btn {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .action-btn.download {
+            background: var(--navy);
+            color: var(--white);
+        }
+
+        .action-btn.download:hover {
+            background: var(--navy-light);
+        }
+
+        .action-btn.view {
+            background: var(--white);
+            color: var(--slate);
+            border: 1px solid rgba(26, 39, 68, 0.15);
+        }
+
+        .action-btn.view:hover {
+            border-color: var(--navy);
+        }
+
+        @keyframes fadeUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Problem Section */
+        .problem-section {
+            padding: 100px 0;
+            background: var(--navy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .problem-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            opacity: 0.5;
+        }
+
+        .problem-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .problem-content .section-label {
+            color: var(--coral-light);
+        }
+
+        .problem-content h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            color: var(--white);
+            margin-bottom: 24px;
+        }
+
+        .problem-content > p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        /* Solution Section */
+        .solution-section {
+            padding: 100px 0;
+            background: var(--cream);
+        }
+
+        .solution-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 56px;
+        }
+
+        .solution-header h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .solution-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .solution-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 24px;
+        }
+
+        .solution-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 36px;
+            border: 1px solid rgba(26, 39, 68, 0.08);
+            transition: all 0.3s ease;
+        }
+
+        .solution-card:hover {
+            box-shadow: 0 20px 50px rgba(26, 39, 68, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .solution-card-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+        }
+
+        .solution-card-icon.report {
+            background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%);
+            color: var(--white);
+        }
+
+        .solution-card-icon.rx {
+            background: linear-gradient(135deg, var(--sage) 0%, var(--sage-light) 100%);
+            color: var(--white);
+        }
+
+        .solution-card h3 {
+            font-size: 1.25rem;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .solution-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* For Clinics Section */
+        .clinics-section {
+            padding: 100px 0;
+            background: var(--cream-dark);
+        }
+
+        .clinics-header {
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto 56px;
+        }
+
+        .clinics-header h2 {
+            font-size: clamp(2rem, 4vw, 2.5rem);
+            color: var(--navy);
+            margin-bottom: 16px;
+        }
+
+        .clinics-header p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+        }
+
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .benefit-card {
+            background: var(--white);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            border: 1px solid rgba(26, 39, 68, 0.06);
+            transition: all 0.3s ease;
+        }
+
+        .benefit-card:hover {
+            box-shadow: 0 15px 40px rgba(26, 39, 68, 0.08);
+            transform: translateY(-2px);
+        }
+
+        .benefit-icon {
+            width: 56px;
+            height: 56px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            margin: 0 auto 18px;
+            background: var(--cream);
+            color: var(--navy);
+        }
+
+        .benefit-card h4 {
+            font-size: 1.05rem;
+            color: var(--navy);
+            margin-bottom: 8px;
+        }
+
+        .benefit-card p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 80px 0;
+            background: var(--navy);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -100%;
+            left: -50%;
+            width: 200%;
+            height: 300%;
+            background: radial-gradient(ellipse at center, rgba(224, 124, 92, 0.1) 0%, transparent 50%);
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: clamp(1.75rem, 3.5vw, 2.25rem);
+            color: var(--white);
+            margin-bottom: 16px;
+        }
+
+        .cta-content p {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 1rem;
+            margin-bottom: 32px;
+        }
+
+        .btn-light {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--white);
+            color: var(--navy);
+            padding: 16px 28px;
+            border-radius: 10px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.25s ease;
+        }
+
+        .btn-light:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Footer */
+        footer {
+            background: #141d2e;
+            padding: 48px 0 32px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 32px;
+        }
+
+        .footer-brand .logo {
+            color: var(--white);
+            margin-bottom: 12px;
+        }
+
+        .footer-brand p {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.85rem;
+            max-width: 280px;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 48px;
+        }
+
+        .footer-links-col h5 {
+            color: var(--white);
+            font-size: 0.85rem;
+            font-weight: 600;
+            margin-bottom: 16px;
+        }
+
+        .footer-links-col ul {
+            list-style: none;
+        }
+
+        .footer-links-col li {
+            margin-bottom: 10px;
+        }
+
+        .footer-links-col a {
+            color: rgba(255, 255, 255, 0.5);
+            text-decoration: none;
+            font-size: 0.8rem;
+            transition: color 0.2s ease;
+        }
+
+        .footer-links-col a:hover {
+            color: var(--white);
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-bottom p {
+            color: rgba(255, 255, 255, 0.4);
+            font-size: 0.75rem;
+        }
+
+        .footer-certifications {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+        }
+
+        .footer-certifications span {
+            font-size: 0.7rem;
+            color: rgba(255, 255, 255, 0.4);
+            padding: 5px 10px;
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 4px;
+        }
+
+        /* Mobile Styles */
+        @media (max-width: 1024px) {
+            .hero-content {
+                grid-template-columns: 1fr;
+                gap: 48px;
+            }
+
+            .hero-visual {
+                max-width: 500px;
+                margin: 0 auto;
+            }
+
+            .solution-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: var(--cream);
+                flex-direction: column;
+                padding: 24px;
+                gap: 16px;
+                border-bottom: 1px solid rgba(26, 39, 68, 0.1);
+            }
+
+            .nav-links.active {
+                display: flex;
+            }
+
+            .mobile-toggle {
+                display: block;
+            }
+
+            .hero {
+                padding: 100px 0 60px;
+            }
+
+            .benefits-grid {
+                grid-template-columns: 1fr;
+                max-width: 360px;
+                margin: 0 auto;
+            }
+
+            .footer-content {
+                flex-direction: column;
+                gap: 32px;
+            }
+
+            .footer-links {
+                flex-direction: column;
+                gap: 24px;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 16px;
+                text-align: center;
+            }
+
+            .footer-certifications {
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+        }
+
+        /* Animations on scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(24px);
+            transition: all 0.5s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-inner">
+            <a href="#" class="logo">
+                <img src="assets/logo.png" alt="Spanfull">
+            </a>
+            <ul class="nav-links" id="navLinks">
+                <li><a href="#solution">Solution</a></li>
+                <li><a href="#for-clinics">For Clinics</a></li>
+                <li><a href="#contact" class="nav-cta">Get in Touch</a></li>
+            </ul>
+            <button class="mobile-toggle" id="mobileToggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <div class="hero-text">
+<!--                    <p class="section-label">For Physiotherapy Clinics</p>-->
+                    <h1>Exercise Prescription <span>Infrastructure</span> for Clinical Care</h1>
+                    <p>We provide the protocols, automation, and reporting. You administer the assessments, review the outputs with patients, and retain full ownership of the clinical relationship.</p>
+                    <div class="hero-badges">
+                        <span class="badge"><i class="fas fa-check-circle"></i> Evidence-Based Protocols</span>
+                        <span class="badge"><i class="fas fa-check-circle"></i> Canadian Data Residency</span>
+                    </div>
+                    <div class="hero-ctas">
+                        <a href="#contact" class="btn-primary">
+                            Get in Touch
+                            <i class="fas fa-arrow-right"></i>
+                        </a>
+                        <a href="#solution" class="btn-secondary">
+                            Learn More
+                        </a>
+                    </div>
+                </div>
+                <div class="hero-visual">
+                    <div class="portal-card">
+                        <div class="portal-header">
+                            <div class="portal-header-left">
+                                <div class="portal-logo"><i class="fas fa-chart-line"></i></div>
+                                <span class="portal-title">Spanfull Portal</span>
+                            </div>
+                            <div class="portal-user">
+                                <div class="portal-user-avatar">AC</div>
+                                Acme Physio
+                            </div>
+                        </div>
+                        <div class="portal-nav">
+                            <span class="portal-nav-item active">Assessments</span>
+                            <span class="portal-nav-item">Patients</span>
+                            <span class="portal-nav-item">Settings</span>
+                        </div>
+                        <div class="portal-content">
+                            <div class="portal-section-header">
+                                <span class="portal-section-title">Recent Assessments</span>
+                                <span class="portal-filter"><i class="fas fa-filter"></i> All</span>
+                            </div>
+                            <div class="assessment-list">
+                                <div class="assessment-row">
+                                    <div class="assessment-info">
+                                        <div class="assessment-avatar">JM</div>
+                                        <div>
+                                            <div class="assessment-name">James M.</div>
+                                            <div class="assessment-date">Jan 15, 2025</div>
+                                        </div>
+                                    </div>
+                                    <span class="assessment-status">Ready</span>
+                                    <div class="assessment-actions">
+                                        <div class="action-btn view"><i class="fas fa-eye"></i></div>
+                                        <div class="action-btn download"><i class="fas fa-download"></i></div>
+                                    </div>
+                                </div>
+                                <div class="assessment-row">
+                                    <div class="assessment-info">
+                                        <div class="assessment-avatar alt">SK</div>
+                                        <div>
+                                            <div class="assessment-name">Sarah K.</div>
+                                            <div class="assessment-date">Jan 14, 2025</div>
+                                        </div>
+                                    </div>
+                                    <span class="assessment-status">Ready</span>
+                                    <div class="assessment-actions">
+                                        <div class="action-btn view"><i class="fas fa-eye"></i></div>
+                                        <div class="action-btn download"><i class="fas fa-download"></i></div>
+                                    </div>
+                                </div>
+                                <div class="assessment-row">
+                                    <div class="assessment-info">
+                                        <div class="assessment-avatar alt2">RP</div>
+                                        <div>
+                                            <div class="assessment-name">Robert P.</div>
+                                            <div class="assessment-date">Jan 12, 2025</div>
+                                        </div>
+                                    </div>
+                                    <span class="assessment-status">Ready</span>
+                                    <div class="assessment-actions">
+                                        <div class="action-btn view"><i class="fas fa-eye"></i></div>
+                                        <div class="action-btn download"><i class="fas fa-download"></i></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem-section">
+        <div class="container">
+            <div class="problem-content fade-in">
+                <p class="section-label">The Challenge</p>
+                <h2>Exercise is Medicine. But It's Not Yet Part of the System.</h2>
+                <p>Modern healthcare excels at preventing acute death. It continues to struggle with prevention, chronic disease, frailty, and functional decline. Exercise is one of the most powerful interventions for long-term health, yet it remains poorly operationalized in clinical care.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution-section" id="solution">
+        <div class="container">
+            <div class="solution-header fade-in">
+                <p class="section-label">What We Provide</p>
+                <h2>Assessment Reports. Exercise Programs. Clinical Infrastructure.</h2>
+                <p>Spanfull handles the backend so you can focus on patient care.</p>
+            </div>
+            <div class="solution-grid">
+                <div class="solution-card fade-in">
+                    <div class="solution-card-icon report"><i class="fas fa-file-medical-alt"></i></div>
+                    <h3>Longevity Assessment Reports</h3>
+                    <p>Patient-friendly reports covering key functional health metrics. Includes context, percentile-based interpretation, and educational content to support clinical conversations.</p>
+                </div>
+                <div class="solution-card fade-in">
+                    <div class="solution-card-icon rx"><i class="fas fa-dumbbell"></i></div>
+                    <h3>Structured Exercise Programs</h3>
+                    <p>Personalized exercise prescriptions aligned with established guidelines. Conservative, safe, and designed for patients with little or no prior training experience.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- For Clinics Section -->
+    <section class="clinics-section" id="for-clinics">
+        <div class="container">
+            <div class="clinics-header fade-in">
+<!--                <p class="section-label">For Physiotherapy Clinics</p>-->
+                <h2>Your Patients. Your Relationship. Our Infrastructure.</h2>
+                <p>Spanfull is a B2B service. You remain the provider of record.</p>
+            </div>
+            <div class="benefits-grid">
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon"><i class="fas fa-clock"></i></div>
+                    <h4>Save Clinical Time</h4>
+                    <p>Automated report generation and exercise programming.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon"><i class="fas fa-chart-bar"></i></div>
+                    <h4>Objective Outcomes</h4>
+                    <p>Track patient progress with standardized, repeatable assessments.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon"><i class="fas fa-user-shield"></i></div>
+                    <h4>Full Ownership</h4>
+                    <p>Reports support your clinical conversations. Patients stay yours.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon"><i class="fas fa-graduation-cap"></i></div>
+                    <h4>Evidence-Based</h4>
+                    <p>Protocols developed with certified exercise physiology oversight.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon"><i class="fas fa-lock"></i></div>
+                    <h4>Canadian Compliance</h4>
+                    <p>Data stored on Canadian servers. PHIPA and PIPEDA compliant.</p>
+                </div>
+                <div class="benefit-card fade-in">
+                    <div class="benefit-icon"><i class="fas fa-plus-circle"></i></div>
+                    <h4>Expand Your Offering</h4>
+                    <p>Add longevity assessments as a service line for your practice.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section" id="contact">
+        <div class="container">
+            <div class="cta-content fade-in">
+                <h2>Interested in Learning More?</h2>
+                <p>We're working with clinical practices of all kinds across Canada. Reach out to see if Spanfull is a fit for your practice.</p>
+                <a href="mailto:info@spanfull.com" class="btn-light">
+                    <i class="fas fa-envelope"></i>
+                    info@spanfull.com
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="#" class="logo">
+                        <img src="assets/logo_icon.png" alt="Spanfull">
+                    </a>
+                    <p>Clinical technology for structured exercise prescription.</p>
+                </div>
+                <div class="footer-links">
+                    <div class="footer-links-col">
+                        <h5>Platform</h5>
+                        <ul>
+                            <li><a href="#solution">Solution</a></li>
+                            <li><a href="#for-clinics">For Clinics</a></li>
+                        </ul>
+                    </div>
+                    <div class="footer-links-col">
+                        <h5>Company</h5>
+                        <ul>
+                            <li><a href="mailto:info@spanfull.com">Contact</a></li>
+                        </ul>
+                    </div>
+<!--                    <div class="footer-links-col">-->
+<!--                        <h5>Legal</h5>-->
+<!--                        <ul>-->
+<!--                            <li><a href="#">Privacy Policy</a></li>-->
+<!--                            <li><a href="#">Terms of Service</a></li>-->
+<!--                        </ul>-->
+<!--                    </div>-->
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Spanfull. All rights reserved.</p>
+                <div class="footer-certifications">
+                    <span>PHIPA Compliant</span>
+                    <span>PIPEDA Compliant</span>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        const mobileToggle = document.getElementById('mobileToggle');
+        const navLinks = document.getElementById('navLinks');
+        
+        mobileToggle.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            const icon = mobileToggle.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        // Navbar scroll effect
+        window.addEventListener('scroll', () => {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.classList.add('scrolled');
+            } else {
+                nav.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                    navLinks.classList.remove('active');
+                    const icon = mobileToggle.querySelector('i');
+                    icon.classList.add('fa-bars');
+                    icon.classList.remove('fa-times');
+                }
+            });
+        });
+
+        // Fade in elements on scroll
+        const fadeObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    fadeObserver.unobserve(entry.target);
+                }
+            });
+        }, {
+            threshold: 0.1,
+            rootMargin: '0px 0px -40px 0px'
+        });
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            fadeObserver.observe(el);
+        });
+    </script>
+</body>
+</html>
